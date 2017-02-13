@@ -55,7 +55,7 @@ public class ToDoListController {
         System.out.println("ID = " + item.getId());
 
         //send the user to home.jsp
-        return "home";
+        return "redirect:home";
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.POST)

@@ -51,29 +51,49 @@ public class ToDoList {
     }
 
     //move an item up in the list
-    public void moveItemUp(ToDoItem item) {
+    public void moveItemUp(int id) {
+
+        //find the index of the item with the matching id
+        //start at -1 so we do not move an item that is not in the list
+        int index = -1;
+        for (int i = 0;i < items.size();i++) {
+
+            //if the item at index i has a matching id, that is the index we are working with
+            if (i == id) {
+                index = i;
+            }
+        }
 
         //check to see if we can move the item up
-        int index = items.indexOf(item);
         if (index > 0) {
 
             //swap the items
             ToDoItem temp = items.get(index-1);
-            items.set(index-1, item);
+            items.set(index-1, items.get(index));
             items.set(index, temp);
         }
     }
 
     //move an item down in the list
-    public void moveItemDown(ToDoItem item) {
+    public void moveItemDown(int id) {
+
+        //find the index of the item with the matching id
+        //start at items.size() so we do not move an item that is not in the list
+        int index = items.size();
+        for (int i = 0;i < items.size();i++) {
+
+            //if the item at index i has a matching id, that is the index we are working with
+            if (i == id) {
+                index = i;
+            }
+        }
 
         //check to see if we can move the item down
-        int index = items.indexOf(item);
         if (index < (items.size() - 1)) {
 
             //swap the items
             ToDoItem temp = items.get(index+1);
-            items.set(index+1, item);
+            items.set(index+1, items.get(index));
             items.set(index, temp);
         }
     }
@@ -108,5 +128,15 @@ public class ToDoList {
 
     public ToDoItem get(int index) {
         return items.get(index);
+    }
+
+    public ToDoItem getById(int id) {
+        ToDoItem item = null;
+        for (int i = 0;i < items.size();i++) {
+            if (id == items.get(i).getId()) {
+                item = items.get(i);
+            }
+        }
+        return item;
     }
 }

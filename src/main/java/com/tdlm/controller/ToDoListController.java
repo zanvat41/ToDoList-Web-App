@@ -1,5 +1,6 @@
 package com.tdlm.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,14 +16,15 @@ import com.data.ToDoList;
 
 @Controller
 public class ToDoListController {
+
+    //the to do list
+    ToDoList list = new ToDoList();
+
     @RequestMapping(value = "/")
     public String home(Model model) {
         model.addAttribute("message", "Welcome to the 'To Do List Maker' web app!");
         return "index";
     }
-
-    //the to do list
-    ToDoList list = new ToDoList();
 
     //method that is called when a get request for the addItem.jsp form arrives
     @RequestMapping(value = "/addItem", method = RequestMethod.GET)

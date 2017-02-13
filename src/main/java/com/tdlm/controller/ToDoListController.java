@@ -3,10 +3,7 @@ package com.tdlm.controller;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import com.data.ToDoItem;
 import com.data.ToDoList;
 import org.springframework.web.servlet.ModelAndView;
@@ -58,8 +55,8 @@ public class ToDoListController {
         return "redirect:home";
     }
 
-    @RequestMapping(value = "/home", method = RequestMethod.POST)
-    public String deleteItem(@PathVariable("id") int id) {
+    @RequestMapping(value = "/delete-todo", method = RequestMethod.GET)
+    public String deleteItem(@RequestParam("id") int id) {
 
         //test print
         System.out.println("before delete, size = " + list.size());
@@ -70,7 +67,7 @@ public class ToDoListController {
         //test print
         System.out.println("after delete, size = " + list.size());
 
-        return "home";
+        return "redirect:home";
     }
 
     private int getUniqueID() {

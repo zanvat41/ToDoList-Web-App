@@ -4,6 +4,7 @@
     <facet type="google-app-engine" name="Google App Engine">
       <configuration>
         <sdk-home-path>$MAVEN_REPOSITORY$/com/google/appengine/appengine-java-sdk/1.8.4/appengine-java-sdk/appengine-java-sdk-1.8.4</sdk-home-path>
+        <persistence-api>JDO3</persistence-api>
       </configuration>
     </facet>
     <facet type="web" name="Web">
@@ -16,6 +17,9 @@
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
       </configuration>
+    </facet>
+    <facet type="Spring" name="Spring">
+      <configuration />
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">

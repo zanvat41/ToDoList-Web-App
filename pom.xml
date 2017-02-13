@@ -20,7 +20,11 @@
         <appengine.app.version>1</appengine.app.version>
         <appengine.target.version>1.8.4</appengine.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <spring.version>3.2.2.RELEASE</spring.version>
+        <jstl.version>1.2</jstl.version>
     </properties>
+
 
     <dependencies>
         <!-- Compile/runtime dependencies -->

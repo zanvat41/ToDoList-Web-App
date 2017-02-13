@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -102,94 +101,109 @@
     </style>
 </head>
 <body class="bodyBackground">
-    <div class="controlBarContainer">
-        <button class=button title="Create a New To Do List">Create</button>
-        <button class=button title="Load an Existing To Do List">Load</button>
-        <button class=button title="Save this To Do List">Save</button>
-        <form action="index.jsp" method="post">
-            <div style="display:none" class="g-signin2" data-width="300" data-height="50" data-longtitle="true" data-onsuccess="onSignIn" data-theme="dark"></div>
-            <button type="submit" class=button title="Logout" onclick="signOut()">Logout</button>
-            <script>
-                function signOut() {
-                    var auth2 = gapi.auth2.getAuthInstance();
-                    auth2.signOut().then(function () {
-                        console.log('User signed out.');
-                    });
-                }
-            </script>
-        </form>
-    </div>
-    <h1 class="topText">To Do List</h1>
-    <form name="details_form">
-        <h2 class="promptText">Details</h2>
-        <label for="form_name">Name of Todo List: </label>
-        <input type="text" name="form_name" id="form_name" maxlength="30" />
-
-        <label>Owner: </label>
-        <label name="form_owner" id="form_owner"></label>
+<div class="controlBarContainer">
+    <button class=button title="Create a New To Do List">Create</button>
+    <button class=button title="Load an Existing To Do List">Load</button>
+    <button class=button title="Save this To Do List">Save</button>
+    <form action="index.jsp" method="post">
+        <div style="display:none" class="g-signin2" data-width="300" data-height="50" data-longtitle="true" data-onsuccess="onSignIn" data-theme="dark"></div>
+        <button type="submit" class=button title="Logout" onclick="signOut()">Logout</button>
         <script>
-            function onSignIn(googleUser) {
-                // Useful data for your client-side scripts:
-                var profile = googleUser.getBasicProfile();
-
-                document.getElementById("form_owner").innerHTML = profile.getEmail();
+            function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    console.log('User signed out.');
+                });
             }
-
         </script>
     </form>
-    <p></p>
-    <div class="details">
-        <h2>Items</h2>
-        <div style="height:50px">
-            <form action="addItem">
-                <button class=button title="Add Item">+</button>
-            </form>
-        </div>
+</div>
+<h1 class="topText">To Do List</h1>
+<form name="details_form">
+    <h2 class="promptText">Details</h2>
+    <label for="form_name">Name of Todo List: </label>
+    <input type="text" name="form_name" id="form_name" maxlength="30" />
+
+    <label>Owner: </label>
+    <label name="form_owner" id="form_owner"></label>
+    <script>
+        function onSignIn(googleUser) {
+            // Useful data for your client-side scripts:
+            var profile = googleUser.getBasicProfile();
+
+            document.getElementById("form_owner").innerHTML = profile.getEmail();
+        }
+
+    </script>
+</form>
+<p></p>
+<div class="details">
+    <h2>Items</h2>
+    <div style="height:50px">
+        <form action="addItem">
+            <button class=button title="Add Item">+</button>
+        </form>
     </div>
-    <div>
+
+
+
+
+    <div class="details">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>#ID</th>
                 <th>Category</th>
                 <th>Description</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th>Completed</th>
+                <th>Is Completed?</th>
+                <th></th>
             </tr>
             </thead>
+            <tbody>
 
-            <c:forEach var="item" items="${items}">
+            <c:forEach items="${todos}" var="todo">
                 <tr>
-                    <td>
-                            ${item.id}
-                    </td>
-                    <td>${user.}</td>
-                    <td>${user.email}</td>
-                    <td>${user.name}</td>
-                    <td>${user.email}</td>
-                    <td>
-                        <c:forEach var="framework" items="${user.framework}"
-                                   varStatus="loop">
-                            ${framework}
-                            <c:if test="${not loop.last}">,</c:if>
-                        </c:forEach>
-                    </td>
-                    <td>
-                        <spring:url value="/users/${user.id}" var="userUrl" />
-                        <spring:url value="/users/${user.id}/delete" var="deleteUrl" />
-                        <spring:url value="/users/${user.id}/update" var="updateUrl" />
 
-                        <button class="btn btn-info"
-                                onclick="location.href='${userUrl}'">Query</button>
-                        <button class="btn btn-primary"
-                                onclick="location.href='${updateUrl}'">Update</button>
-                        <button class="btn btn-danger"
-                                onclick="this.disabled=true;post('${deleteUrl}')">Delete</button>
+                    <td>${todo.category}</td>
+                    <td>${todo.description}</td>
+                    <td>${todo.startDate}</td>
+                    <td>${todo.endDate}</td>
+                    <td>${todo.completed}</td>
+                    <td>
+                        <a href="/update-todo?id=${todo.id}" class="btn btn-success">Update</a>
+                        <a href="/delete-todo?id=${todo.id}" class="btn btn-danger">Delete</a>
+                        <a href="/delete-todo?id=${todo.id}" class="btn btn-danger">Up</a>
+                        <a href="/delete-todo?id=${todo.id}" class="btn btn-danger">Down</a>
                     </td>
                 </tr>
             </c:forEach>
+
+            </tbody>
         </table>
+
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

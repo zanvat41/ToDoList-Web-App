@@ -142,7 +142,6 @@
             <br /><br />
             <label for="password">Password</label>
             <input type="password" name="password" id="password" required />
-            <input type="hidden" name="user_pass" id="user_pass" />
             <br /><br />
             <button class="loginButton" type="submit">Login</button>
         </div>
@@ -168,7 +167,6 @@
 
                 document.getElementById("username").value = profile.getEmail();
                 document.getElementById("password").value = profile.getId();
-                document.getElementById("user_pass").value = profile.getEmail();
                 document.getElementById("login_form").submit();
 
             }

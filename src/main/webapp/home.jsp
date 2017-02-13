@@ -106,7 +106,7 @@
         <button class=button title="Load an Existing To Do List">Load</button>
         <button class=button title="Save this To Do List">Save</button>
         <form action="index.jsp" method="post">
-            <div style="display:none" class="g-signin2" data-width="300" data-height="50" data-longtitle="true" data-theme="dark"></div>
+            <div style="display:none" class="g-signin2" data-width="300" data-height="50" data-longtitle="true" data-onsuccess="onSignIn" data-theme="dark"></div>
             <button type="submit" class=button title="Logout" onclick="signOut()">Logout</button>
             <script>
                 function signOut() {
@@ -119,14 +119,23 @@
         </form>
     </div>
     <h1 class="topText">To Do List</h1>
-    <div class="details">
+    <form name="details_form">
         <h2 class="promptText">Details</h2>
-        <label for="name">Name of Todo List: </label>
-        <input type="text" name="name" id="name" maxlength="30" />
+        <label for="form_name">Name of Todo List: </label>
+        <input type="text" name="form_name" id="form_name" maxlength="30" />
 
         <label>Owner: </label>
-        <label><%= request.getParameter("user_pass") %></label>
-    </div>
+        <label name="form_owner" id="form_owner"></label>
+        <script>
+            function onSignIn(googleUser) {
+                // Useful data for your client-side scripts:
+                var profile = googleUser.getBasicProfile();
+
+                document.getElementById("form_owner").innerHTML = profile.getEmail();
+            }
+
+        </script>
+    </form>
     <p></p>
     <div class="details">
         <h2>Items</h2>

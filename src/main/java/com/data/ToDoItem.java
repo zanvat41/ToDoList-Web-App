@@ -15,6 +15,7 @@ public class ToDoItem {
     Date startDate;
     Date endDate;
     boolean completed;
+    boolean saved;
 
     //default constructor
     public ToDoItem() {
@@ -24,6 +25,7 @@ public class ToDoItem {
         startDate = new Date();
         endDate = new Date();
         completed = false;
+        saved = false;
     }
 
     //detailed constructor
@@ -34,6 +36,7 @@ public class ToDoItem {
         this.startDate = startDate;
         this.endDate = endDate;
         this.completed = completed;
+        saved = false;
     }
 
     //accessor methods
@@ -55,6 +58,9 @@ public class ToDoItem {
     public boolean getCompleted() {
         return completed;
     }
+    public boolean getSaved() {
+        return saved;
+    }
 
     //mutator methods
     public void setId(int id) {
@@ -75,6 +81,9 @@ public class ToDoItem {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+    public void setSaved(boolean saved) {
+        this.saved = saved;
+    }
 
     //reset method
     public void reset() {
@@ -83,5 +92,6 @@ public class ToDoItem {
         startDate = new Date();
         endDate = new Date();
         completed = false;
+        saved = false;
     }
 }

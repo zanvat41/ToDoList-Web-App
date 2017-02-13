@@ -9,6 +9,7 @@ import java.util.Date;
 public class ToDoItem {
 
     //parameters
+    int id;
     String category;
     String description;
     Date startDate;
@@ -17,6 +18,7 @@ public class ToDoItem {
 
     //default constructor
     public ToDoItem() {
+        id = 0;
         category = "";
         description = "";
         startDate = new Date();
@@ -26,6 +28,7 @@ public class ToDoItem {
 
     //detailed constructor
     public ToDoItem(String category, String description, Date startDate, Date endDate, boolean completed) {
+        this.id = id;
         this.category = category;
         this.description = description;
         this.startDate = startDate;
@@ -34,6 +37,9 @@ public class ToDoItem {
     }
 
     //accessor methods
+    public int getId() {
+        return id;
+    }
     public String getCategory() {
         return category;
     }
@@ -51,6 +57,9 @@ public class ToDoItem {
     }
 
     //mutator methods
+    public void setId(int id) {
+        this.id = id;
+    }
     public void setCategory(String category) {
         this.category = category;
     }

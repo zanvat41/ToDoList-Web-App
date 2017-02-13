@@ -79,15 +79,19 @@ public class ToDoList {
     }
 
     //remove an item from a list
-    public boolean removeItem(ToDoItem item) {
+    public boolean deleteItem(int id) {
 
-        //if the item is in the list, remove it and return true
-        if (items.contains(item)) {
-            items.remove(item);
-            return true;
+        //iterate through all items in the list, searching for a matching id
+        for (int i = 0;i < items.size();i++) {
+
+            //if we find a matching item, remove it and return true
+            if (items.get(i).getId() == id) {
+                items.remove(i);
+                return true;
+            }
         }
 
-        //return false otherwise
+        //otherwise return false
         return false;
     }
 
@@ -96,5 +100,13 @@ public class ToDoList {
         name = "";
         owner = "";
         items.clear();
+    }
+
+    public int size() {
+        return items.size();
+    }
+
+    public ToDoItem get(int index) {
+        return items.get(index);
     }
 }

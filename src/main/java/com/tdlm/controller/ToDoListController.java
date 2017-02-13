@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PathVariable;
 import com.data.ToDoItem;
 import com.data.ToDoList;
 
@@ -41,13 +42,62 @@ public class ToDoListController {
     @RequestMapping(value = "/addItem", method = RequestMethod.POST)
     public String completeAddItemForm(@ModelAttribute("addItem") ToDoItem item) {
 
+        //give the item a unique id before adding it to the list
+        item.setId(getUniqueID());
+
         //add the item to the end of the list
         list.addItem(item);
 
         //testing prints, get the category of the last item added and print it out
-        System.out.println(list.getItems().get(list.getItems().size() - 1).getCategory());
+        System.out.println("ID = " + item.getId());
 
         //send the user to home.jsp
         return "home";
+    }
+
+    @RequestMapping(value = "/home", method = RequestMethod.POST)
+    public String deleteItem(@PathVariable("id") int id) {
+
+        //test print
+        System.out.println("before delete, size = " + list.size());
+
+        //remove the item with the matching id
+        list.deleteItem(id);
+
+        //test print
+        System.out.println("after delete, size = " + list.size());
+
+        return "home";
+    }
+
+    private int getUniqueID() {
+
+        //assume the first id is unique
+        boolean unique = true;
+
+        //check every possible id starting from 0
+        for (int i = 0;i < Integer.MAX_VALUE;i++) {
+
+            //check each element in the list for the id
+            for (int k = 0;k < list.size();k++) {
+
+                //if we find the id, it is not unique
+                if (list.get(k).getId() == i) {
+                    unique = false;
+                    break;
+                }
+            }
+
+            //after we are done searching, if the id is unique, return it
+            if (unique == true) {
+                return i;
+            }
+
+            //if not, we check the next id
+            unique = true;
+        }
+
+        //return -1 for error
+        return -1;
     }
 }

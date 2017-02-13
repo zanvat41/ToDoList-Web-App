@@ -143,10 +143,67 @@
             <form action="addItem">
                 <button class=button title="Add Item">+</button>
             </form>
-            <button class=button title="Delete Item">-</button>
-            <button class=button title="Move Up">Up</button>
-            <button class=button title="Move Down">Down</button>
-        </div>
     </div>
+
+
+
+
+    <div class="details">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Is Completed?</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <c:forEach items="${todos}" var="todo">
+                <tr>
+
+                    <td>${todo.category}</td>
+                    <td>${todo.description}</td>
+                    <td>${todo.startDate}</td>
+                    <td>${todo.endDate}</td>
+                    <td>${todo.completed}</td>
+                    <td>
+                        <a href="/update-todo?id=${todo.id}" class="btn btn-success">Update</a>
+                        <a href="/delete-todo?id=${todo.id}" class="btn btn-danger">Delete</a>
+                        <a href="/delete-todo?id=${todo.id}" class="btn btn-danger">Up</a>
+                        <a href="/delete-todo?id=${todo.id}" class="btn btn-danger">Down</a>
+                    </td>
+                </tr>
+            </c:forEach>
+
+            </tbody>
+        </table>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

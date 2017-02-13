@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.data.ToDoItem;
 import com.data.ToDoList;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by Kieran on 2/13/2017.
@@ -101,5 +102,16 @@ public class ToDoListController {
 
         //return -1 for error
         return -1;
+    }
+
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public ModelAndView listTodos() {
+        //List<String> list = new ArrayList<String>();
+        List<ToDoItem> theList = list.getItems();
+        //return back to home.jsp
+        ModelAndView model = new ModelAndView("home");
+        model.addObject("todos", theList);
+
+        return model;
     }
 }

@@ -26,6 +26,12 @@ public class ToDoListController {
         return "index";
     }
 
+    @RequestMapping(value = "home", method = RequestMethod.GET)
+    public String showItems(Model model) {
+        model.addAttribute("list", list.getItems());
+        return "home";
+    }
+
     //method that is called when a get request for the addItem.jsp form arrives
     @RequestMapping(value = "/addItem", method = RequestMethod.GET)
     public String viewAddItemForm(Model model) {

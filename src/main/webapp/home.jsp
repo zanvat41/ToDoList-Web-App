@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -143,10 +144,52 @@
             <form action="addItem">
                 <button class=button title="Add Item">+</button>
             </form>
-            <button class=button title="Delete Item">-</button>
-            <button class=button title="Move Up">Up</button>
-            <button class=button title="Move Down">Down</button>
         </div>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#ID</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Completed</th>
+            </tr>
+            </thead>
+
+            <c:forEach var="item" items="${items}">
+                <tr>
+                    <td>
+                            ${item.id}
+                    </td>
+                    <td>${user.}</td>
+                    <td>${user.email}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>
+                        <c:forEach var="framework" items="${user.framework}"
+                                   varStatus="loop">
+                            ${framework}
+                            <c:if test="${not loop.last}">,</c:if>
+                        </c:forEach>
+                    </td>
+                    <td>
+                        <spring:url value="/users/${user.id}" var="userUrl" />
+                        <spring:url value="/users/${user.id}/delete" var="deleteUrl" />
+                        <spring:url value="/users/${user.id}/update" var="updateUrl" />
+
+                        <button class="btn btn-info"
+                                onclick="location.href='${userUrl}'">Query</button>
+                        <button class="btn btn-primary"
+                                onclick="location.href='${updateUrl}'">Update</button>
+                        <button class="btn btn-danger"
+                                onclick="this.disabled=true;post('${deleteUrl}')">Delete</button>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
     </div>
 </body>
 </html>

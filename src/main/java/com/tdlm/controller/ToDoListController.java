@@ -1,5 +1,11 @@
 package com.tdlm.controller;
 
+import com.google.appengine.api.datastore.*;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,12 +14,14 @@ import com.data.ToDoItem;
 import com.data.ToDoList;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServlet;
+
 /**
  * Created by Kieran on 2/13/2017.
  */
 
 @Controller
-public class ToDoListController {
+public class ToDoListController extends HttpServlet {
 
     //the to do list
     ToDoList list = new ToDoList();
@@ -85,11 +93,33 @@ public class ToDoListController {
         //test print
         System.out.println("before delete, size = " + list.size());
 
+        ToDoItem item = list.getById(id);
+
         //remove the item with the matching id
         list.deleteItem(id);
 
         //test print
         System.out.println("after delete, size = " + list.size());
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Query query = new Query("ToDoItem");
+        FilterPredicate filter1 = new FilterPredicate("listname", FilterOperator.EQUAL, list.getName());
+        FilterPredicate filter2 = new FilterPredicate("id", FilterOperator.EQUAL, item.getId());
+        List list = new ArrayList();
+        list.add(filter1);
+        list.add(filter2);
+        CompositeFilter filter = new CompositeFilter(Query.CompositeFilterOperator.AND, list);
+        query.setFilter(filter);
+        PreparedQuery pq = datastore.prepare(query);
+
+        Entity eItem = pq.asSingleEntity();
+        if (eItem == null) {
+            System.out.println("Item not in datastore");
+        }
+        else {
+            datastore.delete(eItem.getKey());
+            System.out.println("Deleted the item from the datastore.");
+        }
 
         return "redirect:home";
     }
@@ -150,5 +180,64 @@ public class ToDoListController {
         model.addObject("todos", theList);
 
         return model;
+    }
+
+    @RequestMapping(value = "/save", method = RequestMethod.GET)
+    public String saveList(@RequestParam("name") String name, @RequestParam("owner") String owner) {
+        System.out.println("name: " + name + "; owner: " + owner);
+
+        list.setName(name);
+        list.setOwner(owner);
+
+        //first save the actual list -- delete the list from the datastore if it's there and re-save it
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+        Query query = new Query("ToDoList");
+        FilterPredicate filter1 = new FilterPredicate("name", FilterOperator.EQUAL, name);
+        FilterPredicate filter2 = new FilterPredicate("owner", FilterOperator.EQUAL, owner);
+        List elist = new ArrayList();
+        elist.add(filter1);
+        elist.add(filter2);
+        CompositeFilter filter = new CompositeFilter(Query.CompositeFilterOperator.AND, elist);
+        query.setFilter(filter);
+        PreparedQuery pq = datastore.prepare(query);
+
+        Entity tdList = pq.asSingleEntity();
+
+        if (tdList == null) {
+            System.out.println("List is not in dictionary.");
+        }
+        else {
+            datastore.delete(tdList.getKey());
+            System.out.println("List deleted.");
+        }
+
+        //now save the list
+        Entity todolist = new Entity("ToDoList");
+
+        todolist.setProperty("name", name);
+        todolist.setProperty("owner", owner);
+
+        datastore.put(todolist);
+
+        //and save the items
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getSaved())
+                continue;
+
+            Entity todoitem = new Entity("ToDoItem");
+            todoitem.setProperty("id", list.get(i).getId());
+            todoitem.setProperty("listname", name);
+            todoitem.setProperty("category", list.get(i).getCategory());
+            todoitem.setProperty("description", list.get(i).getDescription());
+            todoitem.setProperty("startDate", list.get(i).getStartDate());
+            todoitem.setProperty("endDate", list.get(i).getEndDate());
+            todoitem.setProperty("completed", list.get(i).getCompleted());
+
+            datastore.put(todoitem);
+            list.get(i).setSaved(true);
+        }
+
+        return "redirect:home";
     }
 }

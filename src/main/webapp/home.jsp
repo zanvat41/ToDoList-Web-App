@@ -104,7 +104,7 @@
 <div class="controlBarContainer">
     <button class=button title="Create a New To Do List">Create</button>
     <button class=button title="Load an Existing To Do List">Load</button>
-    <button class=button title="Save this To Do List">Save</button>
+    <button class=button title="Save this To Do List" onclick="getList()">Save</button>
     <form action="index.jsp" method="post">
         <div style="display:none" class="g-signin2" data-width="300" data-height="50" data-longtitle="true" data-onsuccess="onSignIn" data-theme="dark"></div>
         <button type="submit" class=button title="Logout" onclick="signOut()">Logout</button>
@@ -134,6 +134,11 @@
             document.getElementById("form_owner").innerHTML = profile.getEmail();
         }
 
+        function getList() {
+            var name = document.getElementById("form_name").value;
+            var owner = document.getElementById("form_owner").innerHTML;
+            window.location = "save?name=" + name + "&owner=" + owner;
+        }
     </script>
 </form>
 <p></p>
@@ -182,27 +187,7 @@
         </table>
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</div>
 
 </body>
 </html>

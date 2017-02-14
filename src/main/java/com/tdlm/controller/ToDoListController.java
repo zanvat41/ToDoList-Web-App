@@ -27,6 +27,7 @@ public class ToDoListController extends HttpServlet {
     //the to do list
     ToDoList list = new ToDoList();
     String listName = "";
+    boolean pub = false;
 
     @RequestMapping(value = "/")
     public String home(Model model) {
@@ -183,7 +184,7 @@ public class ToDoListController extends HttpServlet {
         return -1;
     }
 
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView listTodos() {
         //List<String> list = new ArrayList<String>();
         List<ToDoItem> theList = list.getItems();
@@ -192,6 +193,11 @@ public class ToDoListController extends HttpServlet {
         model.addObject("todos", theList);
         model.addObject("listName", list.getName());
 
+        String isPub = "";
+        if(pub)
+            isPub = "checked";
+        model.addObject("isPub", isPub);
+
         return model;
     }
 
@@ -199,6 +205,13 @@ public class ToDoListController extends HttpServlet {
     public String setName(@RequestParam("nameoflist") String name) {
         System.out.println("NAME: " + name);
         list.setName(name);
+
+        return "redirect:home";
+    }
+
+    @RequestMapping(value = "/setpub", method = RequestMethod.GET)
+    public String setName(@RequestParam("pub") boolean isPub) {
+        pub = isPub;
 
         return "redirect:home";
     }
@@ -338,9 +351,10 @@ public class ToDoListController extends HttpServlet {
             tempItem.setStartDate(startDate);
             tempItem.setEndDate(endDate);
             tempItem.setCompleted(completed);
-            tempItem.setSaved(true);
+            tempItem.setSaved(false);
 
-            list.addItem(tempItem);
+            if(list.getById(id) == null)
+                list.addItem(tempItem);
         }
 
         System.out.println(Integer.toString(list.size()));

@@ -12,7 +12,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="291465610520-pnb9ums0tmkhdos0pb4m2p5mptuol8l2.apps.googleusercontent.com">
+    <!--<meta name="google-signin-client_id" content="291465610520-pnb9ums0tmkhdos0pb4m2p5mptuol8l2.apps.googleusercontent.com">-->
+    <meta name="google-signin-client_id" content="465037175359-op0toe2tldsnldqibjq3ebouea4girqk.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>To Do List Maker</title>
     <style>
@@ -129,7 +130,7 @@
     <button type="submit" class=button title="Set the list name">Set Name</button>
 </form>
 
-PUBLIC LIST:<input type="checkbox" id="pub_check" name="pub"/>
+PUBLIC LIST:<input type="checkbox" id="pub_check" name="pub" onchange="setPub()" ${isPub}/>
 
 <form name="details_form">
     <h2 class="promptText">Details</h2>
@@ -154,6 +155,11 @@ PUBLIC LIST:<input type="checkbox" id="pub_check" name="pub"/>
         function getOwner() {
             var owner = document.getElementById("form_owner").innerHTML;
             window.location = "load?owner=" + owner;
+        }
+
+        function setPub() {
+            var pub = document.getElementById("pub_check").checked;
+            window.location = "setpub?pub=" + pub;
         }
     </script>
 </form>

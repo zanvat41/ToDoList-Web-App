@@ -135,7 +135,7 @@
         <h3 class="promptText">Please <a href="register.jsp">sign up</a> or log in to continue.</h3>
     </div>
     <br />
-    <form method="post" id="login_form" action="home.jsp">
+    <form method="post" id="login_form" action="home">
         <div class="container">
             <label for="username">Username</label>
             <input type="text" name="username" id="username" maxlength="30" required />

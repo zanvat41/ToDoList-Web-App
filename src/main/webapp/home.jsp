@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -103,7 +104,7 @@
 <body class="bodyBackground">
 <div class="controlBarContainer">
     <button class=button title="Create a New To Do List">Create</button>
-    <button class=button title="Load an Existing To Do List">Load</button>
+    <button class=button title="Load an Existing To Do List" onclick="getOwner()">Load</button>
     <button class=button title="Save this To Do List" onclick="getList()">Save</button>
     <form action="index.jsp" method="post">
         <div style="display:none" class="g-signin2" data-width="300" data-height="50" data-longtitle="true" data-onsuccess="onSignIn" data-theme="dark"></div>
@@ -119,10 +120,17 @@
     </form>
 </div>
 <h1 class="topText">To Do List</h1>
+
+<label for="form_name">Name of Todo List: </label>
+<form action="setname">
+    <input type="text" name="nameoflist" id="form_name" maxlength="30" value="${listName}" />
+    <button type="submit" class=button title="Set the list name">Set Name</button>
+</form>
+
+PUBLIC LIST:<input type="checkbox" id="pub_check" name="pub"/>
+
 <form name="details_form">
     <h2 class="promptText">Details</h2>
-    <label for="form_name">Name of Todo List: </label>
-    <input type="text" name="form_name" id="form_name" maxlength="30" />
 
     <label>Owner: </label>
     <label name="form_owner" id="form_owner"></label>
@@ -137,7 +145,13 @@
         function getList() {
             var name = document.getElementById("form_name").value;
             var owner = document.getElementById("form_owner").innerHTML;
-            window.location = "save?name=" + name + "&owner=" + owner;
+            var pub = document.getElementById("pub_check").checked;
+            window.location = "save?name=" + name + "&owner=" + owner + "&pub=" + pub;
+        }
+
+        function getOwner() {
+            var owner = document.getElementById("form_owner").innerHTML;
+            window.location = "load?owner=" + owner;
         }
     </script>
 </form>

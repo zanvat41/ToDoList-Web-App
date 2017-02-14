@@ -6,6 +6,7 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ public class ToDoListController extends HttpServlet {
 
     //the to do list
     ToDoList list = new ToDoList();
+    String listName = "";
 
     @RequestMapping(value = "/")
     public String home(Model model) {
@@ -104,10 +106,12 @@ public class ToDoListController extends HttpServlet {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Query query = new Query("ToDoItem");
         FilterPredicate filter1 = new FilterPredicate("listname", FilterOperator.EQUAL, list.getName());
-        FilterPredicate filter2 = new FilterPredicate("id", FilterOperator.EQUAL, item.getId());
+        FilterPredicate filter2 = new FilterPredicate("owner", FilterOperator.EQUAL, list.getOwner());
+        FilterPredicate filter3 = new FilterPredicate("id", FilterOperator.EQUAL, item.getId());
         List list = new ArrayList();
         list.add(filter1);
         list.add(filter2);
+        list.add(filter3);
         CompositeFilter filter = new CompositeFilter(Query.CompositeFilterOperator.AND, list);
         query.setFilter(filter);
         PreparedQuery pq = datastore.prepare(query);
@@ -178,12 +182,22 @@ public class ToDoListController extends HttpServlet {
         //return back to home.jsp
         ModelAndView model = new ModelAndView("home");
         model.addObject("todos", theList);
+        model.addObject("listName", list.getName());
 
         return model;
     }
 
+    @RequestMapping(value = "/setname", method = RequestMethod.GET)
+    public String setName(@RequestParam("nameoflist") String name) {
+        System.out.println("NAME: " + name);
+        list.setName(name);
+
+        return "redirect:home";
+    }
+
     @RequestMapping(value = "/save", method = RequestMethod.GET)
-    public String saveList(@RequestParam("name") String name, @RequestParam("owner") String owner) {
+    public String saveList(@RequestParam("name") String name, @RequestParam("owner") String owner,
+                           @RequestParam("pub") boolean pub) {
         System.out.println("name: " + name + "; owner: " + owner);
 
         list.setName(name);
@@ -217,6 +231,7 @@ public class ToDoListController extends HttpServlet {
 
         todolist.setProperty("name", name);
         todolist.setProperty("owner", owner);
+        todolist.setProperty("pub", pub);
 
         datastore.put(todolist);
 
@@ -226,8 +241,9 @@ public class ToDoListController extends HttpServlet {
                 continue;
 
             Entity todoitem = new Entity("ToDoItem");
-            todoitem.setProperty("id", list.get(i).getId());
+            todoitem.setProperty("id", Integer.toString(list.get(i).getId()));
             todoitem.setProperty("listname", name);
+            todoitem.setProperty("owner", owner);
             todoitem.setProperty("category", list.get(i).getCategory());
             todoitem.setProperty("description", list.get(i).getDescription());
             todoitem.setProperty("startDate", list.get(i).getStartDate());
@@ -237,6 +253,89 @@ public class ToDoListController extends HttpServlet {
             datastore.put(todoitem);
             list.get(i).setSaved(true);
         }
+
+        return "redirect:home";
+    }
+
+    @RequestMapping(value = "/load", method = RequestMethod.GET)
+    public ModelAndView loadList(@RequestParam("owner") String owner) {
+        List<ToDoList> resList = new ArrayList<>();
+
+        //fetch the datastore for each list
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+        Query query = new Query("ToDoList");
+        FilterPredicate filter1 = new FilterPredicate("pub", FilterOperator.EQUAL, true);
+        FilterPredicate filter2 = new FilterPredicate("owner", FilterOperator.EQUAL, owner);
+        List elist = new ArrayList();
+        elist.add(filter1);
+        elist.add(filter2);
+        CompositeFilter filter = new CompositeFilter(Query.CompositeFilterOperator.OR, elist);
+        query.setFilter(filter);
+        PreparedQuery pq = datastore.prepare(query);
+
+        //for each list found, create a new list object and put it in the result list
+        for (Entity lists : pq.asIterable()) {
+            String name = (String)lists.getProperty("name");
+            String owner1 = (String)lists.getProperty("owner");
+            System.out.print("NAME: " + name);
+            System.out.print(" OWNER: " + owner + "\n");
+
+            ToDoList tempList = new ToDoList();
+            tempList.setName(name);
+            tempList.setOwner(owner1);
+
+            resList.add(tempList);
+        }
+
+        ModelAndView model = new ModelAndView("load");
+        model.addObject("lists", resList);
+
+        return model;
+    }
+
+    @RequestMapping(value = "/load-list", method = RequestMethod.GET)
+    public String loadListFromDB(@RequestParam("name") String name, @RequestParam("owner") String owner) {
+
+        list.reset();
+
+        //fetch the datastore for each list
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+        Query query = new Query("ToDoItem");
+        System.out.println("NAME " + name);
+        System.out.println("OWNER " + owner);
+        FilterPredicate filter1 = new FilterPredicate("listname", FilterOperator.EQUAL, name);
+        FilterPredicate filter2 = new FilterPredicate("owner", FilterOperator.EQUAL, owner);
+        List elist = new ArrayList();
+        elist.add(filter1);
+        elist.add(filter2);
+        CompositeFilter filter = new CompositeFilter(Query.CompositeFilterOperator.AND, elist);
+        query.setFilter(filter);
+        PreparedQuery pq = datastore.prepare(query);
+
+        for (Entity lists : pq.asIterable()) {
+            int id = Integer.parseInt((String)lists.getProperty("id"));
+            String category = (String)lists.getProperty("category");
+            System.out.println("HELLO");
+            String description = (String)lists.getProperty("description");
+            Date startDate = (Date)lists.getProperty("startDate");
+            Date endDate = (Date)lists.getProperty("endDate");
+            boolean completed = (boolean)lists.getProperty("completed");
+
+            ToDoItem tempItem = new ToDoItem();
+            tempItem.setId(id);
+            tempItem.setCategory(category);
+            tempItem.setDescription(description);
+            tempItem.setStartDate(startDate);
+            tempItem.setEndDate(endDate);
+            tempItem.setCompleted(completed);
+            tempItem.setSaved(true);
+
+            list.addItem(tempItem);
+        }
+
+        System.out.println(Integer.toString(list.size()));
 
         return "redirect:home";
     }

@@ -136,15 +136,6 @@
     </div>
     <br />
     <form method="post" id="login_form" action="home">
-        <div class="container">
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username" maxlength="30" required />
-            <br /><br />
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required />
-            <br /><br />
-            <button class="loginButton" type="submit">Login</button>
-        </div>
     </form>
     <div align="center">
         <div class="g-signin2" data-width="300" data-height="50" data-longtitle="true" data-onsuccess="onSignIn" data-theme="dark"></div>
@@ -165,8 +156,6 @@
                 var id_token = googleUser.getAuthResponse().id_token;
                 console.log("ID Token: " + id_token);
 
-                document.getElementById("username").value = profile.getEmail();
-                document.getElementById("password").value = profile.getId();
                 document.getElementById("login_form").submit();
 
             }

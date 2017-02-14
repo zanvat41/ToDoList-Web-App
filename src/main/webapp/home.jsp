@@ -103,7 +103,9 @@
 </head>
 <body class="bodyBackground">
 <div class="controlBarContainer">
-    <button class=button title="Create a New To Do List">Create</button>
+    <form action="create">
+        <button class=button title="Create a New To Do List">Create</button>
+    </form>
     <button class=button title="Load an Existing To Do List" onclick="getOwner()">Load</button>
     <button class=button title="Save this To Do List" onclick="getList()">Save</button>
     <form action="index.jsp" method="post">

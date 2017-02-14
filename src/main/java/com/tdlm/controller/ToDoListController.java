@@ -144,6 +144,14 @@ public class ToDoListController extends HttpServlet {
         return "redirect:home";
     }
 
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String createNew() {
+
+        list.reset();
+
+        return "redirect:home";
+    }
+
     private int getUniqueID() {
 
         //assume the first id is unique

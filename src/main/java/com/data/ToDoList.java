@@ -50,6 +50,12 @@ public class ToDoList {
 
     }
 
+    public void updateItem(ToDoItem updated) {
+        updated.setSaved(false);
+        items.set(getIndexById(updated.getId()), updated);
+
+    }
+
     //move an item up in the list
     public void moveItemUp(int id) {
 
@@ -59,7 +65,7 @@ public class ToDoList {
         for (int i = 0;i < items.size();i++) {
 
             //if the item at index i has a matching id, that is the index we are working with
-            if (i == id) {
+            if (items.get(i).getId() == id) {
                 index = i;
             }
         }
@@ -83,7 +89,7 @@ public class ToDoList {
         for (int i = 0;i < items.size();i++) {
 
             //if the item at index i has a matching id, that is the index we are working with
-            if (i == id) {
+            if (items.get(i).getId() == id) {
                 index = i;
             }
         }
@@ -138,5 +144,17 @@ public class ToDoList {
             }
         }
         return item;
+    }
+
+    public int getIndexById(int id) {
+        ToDoItem item = null;
+        int result = 0;
+
+        for (int i = 0;i < items.size();i++) {
+            if (id == items.get(i).getId()) {
+                result = i;
+            }
+        }
+        return result;
     }
 }

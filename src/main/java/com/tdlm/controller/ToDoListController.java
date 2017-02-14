@@ -55,6 +55,30 @@ public class ToDoListController {
         return "redirect:home";
     }
 
+    @RequestMapping(value = "/update-todo", method = RequestMethod.GET)
+    public String updateItem(@RequestParam("id") int id, Model model) {
+
+        ToDoItem itemToUpdate = list.getById(id);
+
+        model.addAttribute("itemToUpdate", itemToUpdate);
+
+        return "update-todo";
+    }
+
+    //method that is used when the user completes the form to add the item to the list
+    @RequestMapping(value = "/update-todo", method = RequestMethod.POST)
+    public String completeUpdateItemForm(@ModelAttribute("itemToUpdate") ToDoItem item) {
+
+        //add the item to the end of the list
+        list.updateItem(item);
+
+        //testing prints, get the category of the last item added and print it out
+        System.out.println("ID = " + item.getId());
+
+        //send the user to home.jsp
+        return "redirect:home";
+    }
+
     @RequestMapping(value = "/delete-todo", method = RequestMethod.GET)
     public String deleteItem(@RequestParam("id") int id) {
 
@@ -66,6 +90,22 @@ public class ToDoListController {
 
         //test print
         System.out.println("after delete, size = " + list.size());
+
+        return "redirect:home";
+    }
+
+    @RequestMapping(value = "/up-todo", method = RequestMethod.GET)
+    public String itemUp(@RequestParam("id") int id) {
+
+        list.moveItemUp(id);
+
+        return "redirect:home";
+    }
+
+    @RequestMapping(value = "/down-todo", method = RequestMethod.GET)
+    public String itemDown(@RequestParam("id") int id) {
+
+        list.moveItemDown(id);
 
         return "redirect:home";
     }

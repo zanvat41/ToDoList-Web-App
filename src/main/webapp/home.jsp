@@ -164,7 +164,6 @@
 
             <c:forEach items="${todos}" var="todo">
                 <tr>
-
                     <td>${todo.category}</td>
                     <td>${todo.description}</td>
                     <td>${todo.startDate}</td>
@@ -173,8 +172,8 @@
                     <td>
                         <a href="/update-todo?id=${todo.id}" class="btn btn-success">Update</a>
                         <a href="/delete-todo?id=${todo.id}" class="btn btn-danger">Delete</a>
-                        <a href="/delete-todo?id=${todo.id}" class="btn btn-danger">Up</a>
-                        <a href="/delete-todo?id=${todo.id}" class="btn btn-danger">Down</a>
+                        <a href="/up-todo?id=${todo.id}" class="btn btn-danger">Up</a>
+                        <a href="/down-todo?id=${todo.id}" class="btn btn-danger">Down</a>
                     </td>
                 </tr>
             </c:forEach>

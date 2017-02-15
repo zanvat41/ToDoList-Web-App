@@ -25,6 +25,8 @@
         <jstl.version>1.2</jstl.version>
     </properties>
 
+    <gcloud_directory>C:\Users\Kieran\AppData\Local\Google\Cloud SDK</gcloud_directory>
+
 
     <dependencies>
         <!-- Compile/runtime dependencies -->

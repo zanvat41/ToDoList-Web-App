@@ -340,8 +340,8 @@ public class ToDoListController extends HttpServlet {
             String category = (String)lists.getProperty("category");
             System.out.println("HELLO");
             String description = (String)lists.getProperty("description");
-            Date startDate = (Date)lists.getProperty("startDate");
-            Date endDate = (Date)lists.getProperty("endDate");
+            String startDate = (String)lists.getProperty("startDate");
+            String endDate = (String)lists.getProperty("endDate");
             boolean completed = (boolean)lists.getProperty("completed");
 
             ToDoItem tempItem = new ToDoItem();

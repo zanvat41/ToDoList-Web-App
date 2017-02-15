@@ -12,8 +12,8 @@ public class ToDoItem {
     int id;
     String category;
     String description;
-    Date startDate;
-    Date endDate;
+    String startDate;
+    String endDate;
     boolean completed;
     boolean saved;
 
@@ -22,14 +22,14 @@ public class ToDoItem {
         id = 0;
         category = "";
         description = "";
-        startDate = new Date();
-        endDate = new Date();
+        startDate = "";
+        endDate = "";
         completed = false;
         saved = false;
     }
 
     //detailed constructor
-    public ToDoItem(String category, String description, Date startDate, Date endDate, boolean completed) {
+    public ToDoItem(String category, String description, String startDate, String endDate, boolean completed) {
         this.id = id;
         this.category = category;
         this.description = description;
@@ -49,10 +49,10 @@ public class ToDoItem {
     public String getDescription() {
         return description;
     }
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
     public boolean getCompleted() {
@@ -72,10 +72,10 @@ public class ToDoItem {
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
     public void setCompleted(boolean completed) {
@@ -89,8 +89,8 @@ public class ToDoItem {
     public void reset() {
         category = "";
         description = "";
-        startDate = new Date();
-        endDate = new Date();
+        startDate = "";
+        endDate = "";
         completed = false;
         saved = false;
     }

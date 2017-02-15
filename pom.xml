@@ -98,7 +98,7 @@
                 <artifactId>gcloud-maven-plugin</artifactId>
                 <version>2.0.9.120.v20160803</version>
                 <configuration>
-                    <gcloud_directory>C:\Users\Kieran\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin</gcloud_directory>
+                    <gcloud_directory>C:\Users\Kieran\AppData\Local\Google\Cloud SDK\google-cloud-sdk</gcloud_directory>
                     <verbosity>debug</verbosity>
                     <version>specific_version</version>
                     <set_default>true</set_default>

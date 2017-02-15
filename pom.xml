@@ -100,7 +100,7 @@
                 <configuration>
                     <gcloud_directory>C:\Users\Kieran\AppData\Local\Google\Cloud SDK\google-cloud-sdk</gcloud_directory>
                     <verbosity>debug</verbosity>
-                    <version>specific_version</version>
+                    <version>2.0.9.120.v20160803</version>
                     <set_default>true</set_default>
                     <log_level>info</log_level>
                     <max_module_instances>2</max_module_instances>

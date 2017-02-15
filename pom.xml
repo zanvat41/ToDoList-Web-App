@@ -82,9 +82,9 @@
             </plugin>
 
             <plugin>
-                <groupId>com.google.cloud.tools</groupId>
+                <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.0.0</version>
+                <version>${appengine.target.version}</version>
             </plugin>
 
             <plugin>

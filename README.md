@@ -1,4 +1,7 @@
-This is a Todo List maker web app, with google account login, deployed with google app engine.
+This is a Todo List maker web app, with google account login. 
+
+
+Using spring mvc and google app engine.
 
 
 Link to the app: http://springapp-158706.appspot.com/
